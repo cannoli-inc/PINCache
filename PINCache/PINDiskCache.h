@@ -9,6 +9,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class PINDiskCache;
 
+typedef BOOL (^PINObjectArchiverBlock)(id<NSCoding> object, NSString* filePath);
+
 /**
  A callback block which provides only the cache as an argument
  */
@@ -312,6 +314,16 @@ typedef void (^PINDiskCacheObjectBlock)(PINDiskCache *cache, NSString *key, id <
  @param key A key to associate with the object. This string will be copied.
  */
 - (void)setObject:(id <NSCoding>)object forKey:(NSString *)key;
+
+/**
+ Stores an object in the cache for the specified key with a custom archiver. This method blocks the calling thread until
+ the object has been stored.
+ 
+ @see setObject:forKey:block:
+ @param object An object to store in the cache.
+ @param key A key to associate with the object. This string will be copied.
+ */
+- (void)setObject:(id <NSCoding>)object forKey:(NSString *)key withArchiver:(PINObjectArchiverBlock)archiver;
 
 /**
  Removes the object for the specified key. This method blocks the calling thread until the object

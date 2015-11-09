@@ -463,7 +463,7 @@ NSString * const PINDiskCacheSharedName = @"PINDiskCacheShared";
     dispatch_async(_asyncQueue, ^{
         PINDiskCache *strongSelf = weakSelf;
         NSURL *fileURL = nil;
-        [strongSelf setObject:object forKey:key fileURL:&fileURL];
+        [strongSelf setObject:object forKey:key fileURL:&fileURL withArchiver:nil];
         
         if (block) {
             [strongSelf lock];
@@ -644,10 +644,15 @@ NSString * const PINDiskCacheSharedName = @"PINDiskCacheShared";
 
 - (void)setObject:(id <NSCoding>)object forKey:(NSString *)key
 {
-    [self setObject:object forKey:key fileURL:nil];
+    [self setObject:object forKey:key fileURL:nil withArchiver:nil];
 }
 
-- (void)setObject:(id <NSCoding>)object forKey:(NSString *)key fileURL:(NSURL **)outFileURL
+- (void)setObject:(id <NSCoding>)object forKey:(NSString *)key withArchiver:(PINObjectArchiverBlock)archiver
+{
+    [self setObject:object forKey:key fileURL:nil withArchiver:archiver];
+}
+
+- (void)setObject:(id <NSCoding>)object forKey:(NSString *)key fileURL:(NSURL **)outFileURL withArchiver:(PINObjectArchiverBlock)archiver
 {
     NSDate *now = [[NSDate alloc] init];
     
@@ -664,8 +669,12 @@ NSString * const PINDiskCacheSharedName = @"PINDiskCacheShared";
         if (self->_willAddObjectBlock)
             self->_willAddObjectBlock(self, key, object, fileURL);
         
-        BOOL written = [NSKeyedArchiver archiveRootObject:object toFile:[fileURL path]];
-        
+        BOOL written;
+        if (archiver) {
+            written = archiver(object,[fileURL path]);
+        } else {
+            written = [NSKeyedArchiver archiveRootObject:object toFile:[fileURL path]];
+        }
         if (written) {
             [self setFileModificationDate:now forURL:fileURL];
             
