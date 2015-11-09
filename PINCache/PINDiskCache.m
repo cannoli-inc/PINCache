@@ -144,7 +144,7 @@ NSString * const PINDiskCacheSharedName = @"PINDiskCacheShared";
     if (![string length])
         return @"";
     
-    CFStringRef static const charsToEscape = CFSTR(".:/");
+    CFStringRef static const charsToEscape = CFSTR(":/");
     CFStringRef escapedString = CFURLCreateStringByAddingPercentEscapes(kCFAllocatorDefault,
                                                                         (__bridge CFStringRef)string,
                                                                         NULL,
