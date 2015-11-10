@@ -475,7 +475,7 @@ NSString * const PINDiskCacheSharedName = @"PINDiskCacheShared";
 
 - (void)setObject:(id <NSCoding>)object forKey:(NSString *)key block:(PINDiskCacheObjectBlock)block
 {
-    [self setObject:object forKey:key withArchiver:nil block:block];
+    [self setObject:object forKey:key withArchiver:nil completionBlock:block];
 }
 
 - (void)removeObjectForKey:(NSString *)key block:(PINDiskCacheObjectBlock)block
