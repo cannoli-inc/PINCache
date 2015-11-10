@@ -456,21 +456,26 @@ NSString * const PINDiskCacheSharedName = @"PINDiskCacheShared";
     });
 }
 
-- (void)setObject:(id <NSCoding>)object forKey:(NSString *)key block:(PINDiskCacheObjectBlock)block
+- (void)setObject:(id <NSCoding>)object forKey:(NSString *)key withArchiver:(PINObjectArchiverBlock)archiver completionBlock:(nullable PINDiskCacheBlock)block;
 {
     __weak PINDiskCache *weakSelf = self;
     
     dispatch_async(_asyncQueue, ^{
         PINDiskCache *strongSelf = weakSelf;
         NSURL *fileURL = nil;
-        [strongSelf setObject:object forKey:key fileURL:&fileURL withArchiver:nil];
+        [strongSelf setObject:object forKey:key fileURL:&fileURL withArchiver:archiver];
         
         if (block) {
             [strongSelf lock];
-                block(strongSelf, key, object, fileURL);
+            block(strongSelf, key, object, fileURL);
             [strongSelf unlock];
         }
     });
+}
+
+- (void)setObject:(id <NSCoding>)object forKey:(NSString *)key block:(PINDiskCacheObjectBlock)block
+{
+    [self setObject setObject:object forKey:key fileURL:&fileURL withArchiver:nil block:block];
 }
 
 - (void)removeObjectForKey:(NSString *)key block:(PINDiskCacheObjectBlock)block

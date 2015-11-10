@@ -321,7 +321,19 @@ typedef void (^PINDiskCacheObjectBlock)(PINDiskCache *cache, NSString *key, id <
  
  @see setObject:forKey:block:
  @param object An object to store in the cache.
+ @param archiver A custom object archiver.
+ @param block A block to be executed serially after the object has been stored, or nil.
+ */
+- (void)setObject:(id <NSCoding>)object forKey:(NSString *)key withArchiver:(PINObjectArchiverBlock)archiver completionBlock:(nullable PINDiskCacheBlock)block;
+
+/**
+ Stores an object in the cache for the specified key with a custom archiver. This method blocks the calling thread until
+ the object has been stored.
+ 
+ @see setObject:forKey:block:
+ @param object An object to store in the cache.
  @param key A key to associate with the object. This string will be copied.
+ @param archiver A custom object archiver.
  */
 - (void)setObject:(id <NSCoding>)object forKey:(NSString *)key withArchiver:(PINObjectArchiverBlock)archiver;
 
