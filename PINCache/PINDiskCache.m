@@ -456,7 +456,7 @@ NSString * const PINDiskCacheSharedName = @"PINDiskCacheShared";
     });
 }
 
-- (void)setObject:(id <NSCoding>)object forKey:(NSString *)key withArchiver:(PINObjectArchiverBlock)archiver completionBlock:(nullable PINDiskCacheBlock)block;
+- (void)setObject:(id <NSCoding>)object forKey:(NSString *)key withArchiver:(PINObjectArchiverBlock)archiver completionBlock:(nullable PINDiskCacheBlock)block
 {
     __weak PINDiskCache *weakSelf = self;
     
@@ -475,7 +475,7 @@ NSString * const PINDiskCacheSharedName = @"PINDiskCacheShared";
 
 - (void)setObject:(id <NSCoding>)object forKey:(NSString *)key block:(PINDiskCacheObjectBlock)block
 {
-    [self setObject setObject:object forKey:key fileURL:&fileURL withArchiver:nil block:block];
+    [self setObject:object forKey:key withArchiver:nil block:block];
 }
 
 - (void)removeObjectForKey:(NSString *)key block:(PINDiskCacheObjectBlock)block
