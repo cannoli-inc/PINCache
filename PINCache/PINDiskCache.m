@@ -456,7 +456,7 @@ NSString * const PINDiskCacheSharedName = @"PINDiskCacheShared";
     });
 }
 
-- (void)setObject:(id <NSCoding>)object forKey:(NSString *)key withArchiver:(PINObjectArchiverBlock)archiver completionBlock:(nullable PINDiskCacheBlock)block
+- (void)setObject:(id <NSCoding>)object forKey:(NSString *)key withArchiver:(PINObjectArchiverBlock)archiver completionBlock:(nullable PINDiskCacheObjectBlock)block
 {
     __weak PINDiskCache *weakSelf = self;
     
